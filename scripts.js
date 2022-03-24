@@ -246,6 +246,70 @@ import { random, people } from './utils/data.js'; // multiple items [variable an
 // you include the type attribute to the main js file in index.html [type=module]
 <script type='module' src='./app.js' ></script> 
 
+// -----------
+
+// NAMED EXPORTS 
+
+// Exporting Multiple Items [one by one: individual named exports]
+
+const name = Sipho;
+
+function double(n) {
+  return n * 2;
+}
+
+export { name, double };
+
+// In another js file
+
+import { name, double } from './utils.js';
+
+console.log(name);
+console.log(double(5));
+
+// The name of the imported item can be change. 
+
+import { double as utilsdouble, name } from 'file path';
+
+console.log(utilsdouble(5));
+
+//  ---------
+
+// Export multiple item [import all the named export at one go]
+
+const name = Sipho;
+
+function double(n) {
+  return n * 2;
+}
+
+export { name, double };
+
+// In another js file
+
+import * as utils from './utils.js';
+
+console.log(utils.double(5));
+console.log(utils.name);
+
+
+// DEFAULT EXPORTS
+
+//  main file
+
+export default function sayHello() {
+  console.log('hello!');
+}
+
+
+// in another js file
+
+import { default as sayHello } from './hello.js';
+
+// or
+
+import sayHello from './hello.js';
+
 // 
 
 /* -------------------------------------------------------------------------------------------------------- */
@@ -254,14 +318,14 @@ import { random, people } from './utils/data.js'; // multiple items [variable an
   const getFetch = fetch();
 
   fetch()
-  .then((response) => {
-    return response.json();   // if response is json 
-    return  response.text();  // if response is text 
-  }).then((data) => {
+    .then((response) => {
+      return response.json();   // if response is json 
+      return  response.text();  // if response is text 
+    }).then((data) => {
 
-  }).catch((err) => {
+    }).catch((err) => {
 
-  })
+    })
 
   //  the fetch() makes the http request to an API end point
   //  as argument it takes the resorce you want to fetch, it could be an endpoint API or Local JSON
@@ -680,6 +744,34 @@ inputs.forEach((input) => {
 let reg = /[a-z]ig/;
 
 let reg2 = new RegExp(/[a-z]/, 'i');
+
+// FORM VALIDATION
+
+const inputs = document.querySelectorAll('input.form-control');
+
+// regex patterns
+const patterns = {
+  username: /^[a-z\d]{5,12}$/i,
+  email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/i,
+  password: /^[\w@-]{8,20}$/,
+};
+
+function validate(field, regex) {
+  if(regex.test(field.value)) {
+    field.classList.add('is-valid');
+    field.classList.remove('is-invalid');
+  } else {
+    field.classList.add('is-invalid');
+    field.classList.remove('is-valid');
+  }
+};
+
+inputs.forEach(input => {
+  input.addEventListener('keyup', e => {
+    validate(e.target, patterns[e.target.attributes.name.value]);
+  });
+});
+
 
 
 /* -------------------------------------------------------------------------------------------------------- */
